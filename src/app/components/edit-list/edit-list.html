@@ -1,0 +1,72 @@
+<div class="edit-container">
+  <div class="header">
+    <h1>✏️ Editar Participantes</h1>
+    <a routerLink="/" class="back-button">🎰 Volver a la Ruleta</a>
+  </div>
+
+  <div class="content">
+    <div class="add-section">
+      <h2>Agregar Participante</h2>
+      <div class="add-form">
+        <input
+          type="text"
+          [(ngModel)]="newParticipantName"
+          placeholder="Nombre del participante"
+          (keyup.enter)="addParticipant()"
+          class="input-field" />
+        <button (click)="addParticipant()" class="add-btn">
+          ➕ Agregar
+        </button>
+      </div>
+    </div>
+
+    <div class="list-section">
+      <div class="list-header">
+        <h2>Participantes ({{ participants().length }})</h2>
+        <button (click)="resetList()" class="reset-btn">
+          🔄 Restablecer
+        </button>
+      </div>
+
+      @if (participants().length === 0) {
+        <div class="empty-message">
+          <p>No hay participantes. Agrega algunos para comenzar.</p>
+        </div>
+      } @else {
+        <ul class="participants-list">
+          @for (participant of participants(); track participant.id) {
+            <li class="participant-item" [style.--item-color]="participant.color">
+              @if (editingId() === participant.id) {
+                <div class="edit-form">
+                  <input
+                    type="text"
+                    [(ngModel)]="editingName"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEdit()"
+                    class="edit-input" />
+                  <div class="edit-buttons">
+                    <button (click)="saveEdit()" class="save-btn">✓</button>
+                    <button (click)="cancelEdit()" class="cancel-btn">✕</button>
+                  </div>
+                </div>
+              } @else {
+                <div class="participant-info">
+                  <span class="color-indicator"></span>
+                  <span class="participant-name">{{ participant.name }}</span>
+                </div>
+                <div class="participant-actions">
+                  <button (click)="startEdit(participant)" class="edit-btn">
+                    ✏️
+                  </button>
+                  <button (click)="removeParticipant(participant.id)" class="delete-btn">
+                    🗑️
+                  </button>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</div>

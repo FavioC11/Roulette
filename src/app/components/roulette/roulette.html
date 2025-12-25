@@ -1,0 +1,62 @@
+<div class="roulette-container">
+  <div class="header">
+    <h1>🎰 Ruleta de Sorteos</h1>
+    <a routerLink="/edit" class="edit-button">✏️ Editar Lista</a>
+  </div>
+
+  @if (participants().length === 0) {
+    <div class="empty-state">
+      <p>No hay participantes en la lista</p>
+      <a routerLink="/edit" class="add-button">Agregar Participantes</a>
+    </div>
+  } @else {
+    <div class="wheel-wrapper">
+      <div class="wheel-container">
+        <div class="pointer"></div>
+        <div
+          class="wheel"
+          [style.transform]="'rotate(' + rotation() + 'deg)'"
+          [class.spinning]="isSpinning()">
+          @for (participant of participants(); track participant.id; let i = $index) {
+            <div
+              class="segment"
+              [style.transform]="getRotation(i)"
+              [style.--segment-color]="participant.color"
+              [style.--segment-angle]="getSegmentAngle() + 'deg'">
+              <div class="segment-content">
+                <span class="segment-text">{{ participant.name }}</span>
+              </div>
+            </div>
+          }
+        </div>
+        <button
+          class="spin-button"
+          (click)="spinWheel()"
+          [disabled]="!canSpin()">
+          {{ isSpinning() ? '🎡 Girando...' : '🎯 ¡GIRAR!' }}
+        </button>
+      </div>
+    </div>
+
+    @if (winner()) {
+      <div class="winner-announcement">
+        <h2>🎉 ¡Ganador! 🎉</h2>
+        <p class="winner-name">{{ winner() }}</p>
+      </div>
+    }
+
+    <div class="participants-count">
+      <p>{{ participants().length }} {{ participants().length === 1 ? 'participante' : 'participantes' }}</p>
+    </div>
+  }
+
+  @if (showFireworks()) {
+    <div class="fireworks">
+      <div class="firework"></div>
+      <div class="firework"></div>
+      <div class="firework"></div>
+      <div class="firework"></div>
+      <div class="firework"></div>
+    </div>
+  }
+</div>

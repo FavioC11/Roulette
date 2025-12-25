@@ -90,8 +90,45 @@ export class Roulette {
     return count > 0 ? 360 / count : 0;
   }
 
-  getRotation(index: number): string {
+  getSegmentPath(index: number): string {
     const angle = this.getSegmentAngle();
-    return `rotate(${index * angle}deg)`;
+    const startAngle = index * angle - 90; // -90 para empezar desde arriba
+    const endAngle = (index + 1) * angle - 90;
+
+    const startAngleRad = (startAngle * Math.PI) / 180;
+    const endAngleRad = (endAngle * Math.PI) / 180;
+
+    const centerX = 100;
+    const centerY = 100;
+    const radius = 100;
+
+    const x1 = centerX + radius * Math.cos(startAngleRad);
+    const y1 = centerY + radius * Math.sin(startAngleRad);
+    const x2 = centerX + radius * Math.cos(endAngleRad);
+    const y2 = centerY + radius * Math.sin(endAngleRad);
+
+    const largeArcFlag = angle > 180 ? 1 : 0;
+
+    return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+  }
+
+  getTextX(index: number): number {
+    const angle = this.getSegmentAngle();
+    const middleAngle = (index * angle + angle / 2 - 90) * Math.PI / 180;
+    return 100 + 60 * Math.cos(middleAngle);
+  }
+
+  getTextY(index: number): number {
+    const angle = this.getSegmentAngle();
+    const middleAngle = (index * angle + angle / 2 - 90) * Math.PI / 180;
+    return 100 + 60 * Math.sin(middleAngle);
+  }
+
+  getTextTransform(index: number): string {
+    const angle = this.getSegmentAngle();
+    const middleAngle = index * angle + angle / 2;
+    const textX = this.getTextX(index);
+    const textY = this.getTextY(index);
+    return `rotate(${middleAngle}, ${textX}, ${textY})`;
   }
 }

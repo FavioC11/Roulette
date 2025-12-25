@@ -101,59 +101,30 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  position: relative;
-  overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  border: 8px solid white;
   transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  background: white;
+  border: 8px solid white;
 
   &.spinning {
     transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
   }
 }
 
-.segment {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  top: 0;
-  left: 50%;
-  transform-origin: 0% 100%;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-
-  &::before {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: var(--segment-color);
-    transform-origin: 0% 100%;
-    transform: rotate(calc(var(--segment-angle) / 2)) translateY(-50%);
+.segment-group {
+  path {
+    stroke-width: 2;
+    transition: opacity 0.2s;
   }
 }
 
-.segment-content {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-origin: 0% 100%;
-  transform: rotate(calc(var(--segment-angle) / 2));
-}
-
 .segment-text {
-  color: white;
+  fill: white;
   font-weight: 700;
-  font-size: clamp(0.7rem, 2vw, 1rem);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  padding: 0.5rem;
-  transform: translateX(30%) translateY(-50%);
-  text-align: center;
-  max-width: 80px;
-  word-wrap: break-word;
+  font-size: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  user-select: none;
 }
 
 .spin-button {
